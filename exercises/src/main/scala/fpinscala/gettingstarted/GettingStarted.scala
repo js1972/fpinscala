@@ -148,9 +148,11 @@ object PolymorphicFunctions {
   def isSorted[A](as: Array[A], gt: (A,A) => Boolean): Boolean = {
     @annotation.tailrec
     def loop(n: Int): Boolean = 
-      if (gt(as(n-1), as(n))) loop(n+1) 
-      else true
+      if (n == as.length) true
+      else if (gt(as(n), as(n-1))) loop(n+1) 
+      else false
       
+    if (as.length == 0) true
     loop(1)
   }
 
@@ -166,14 +168,17 @@ object PolymorphicFunctions {
 
   // Note that `=>` associates to the right, so we could
   // write the return type as `A => B => C`
-  def curry[A,B,C](f: (A, B) => C): A => (B => C) =
-    ???
+  def curry[A,B,C](f: (A, B) => C): A => (B => C) = {
+    a => b => f(a, b)
+    //f.curried
+  }
 
   // NB: The `Function2` trait has a `curried` method already
 
   // Exercise 5: Implement `uncurry`
-  def uncurry[A,B,C](f: A => B => C): (A, B) => C =
-    ???
+  def uncurry[A,B,C](f: A => B => C): (A, B) => C = {
+    (a, b) => f(a)(b)
+  }
 
   /*
   NB: There is a method on the `Function` object in the standard library,
@@ -187,14 +192,17 @@ object PolymorphicFunctions {
 
   // Exercise 6: Implement `compose`
 
-  def compose[A,B,C](f: B => C, g: A => B): A => C =
-    ???
+  def compose[A,B,C](f: B => C, g: A => B): A => C = {
+    a => f(g(a))
+  }
     
   def main(args: Array[String]): Unit = {
     val aSorted = Array(1, 2, 3, 4, 5)
     val aUnsorted = Array(1, 2, 3, 5, 4)
+    val aStrings = Array("first", "second", "third")
     
-    println(isSorted(aSorted, (x: Int, y: Int) => x > y))
-    println(isSorted(aUnsorted, (x: Int, y: Int) => x > y))
+    println("is sorted (with sorted Int array): " + isSorted(aSorted, (x: Int, y: Int) => x > y))
+    println("is sorted (with unsorted Int array): " + isSorted(aUnsorted, (x: Int, y: Int) => x > y))
+    println("is sorted (with sorted String array): " + isSorted(aStrings, (x: String, y: String) => x > y))
   }
 }
