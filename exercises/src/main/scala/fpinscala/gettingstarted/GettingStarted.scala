@@ -228,6 +228,43 @@ object ListTest{
       def apply[A](as: A*): List[A] = 
         if (as.isEmpty) Nil
         else Cons(as.head, apply(as.tail: _*))
+      
+      def tail[A](l: List[A]): List[A] = l match {
+          case Nil        => sys.error("tail of empty list")
+          case Cons(_, t) => t
+      }
+      
+      def setHead[A](h: A, l: List[A]): List[A] = l match {
+        case Nil        => sys.error("set head of empty list")
+        case Cons(_, t) => Cons(h, t)
+      }
+      
+      def drop[A](l: List[A], n: Int): List[A] = l match {
+        case Nil        => Nil
+        case Cons(_, t) => if (n <= 0) l else drop(t, n-1) 
+      }
+
+      // slightly different way from the answers...
+      def drop2[A](l: List[A], n: Int): List[A] = 
+        if (n <= 0) l
+        else l match {
+          case Nil => Nil
+          case Cons(_, t) => drop(t, n-1) 
+        }
+      
+      // I'm using a curried function so that scalac can do type inference on the predicate function...
+      def dropWhile[A](l: List[A])(f: A => Boolean): List[A] = l match {
+        case Cons(h, t) if f(h) => dropWhile(t)(f)
+        case _                  => l
+      }
+      
+      // this is not tail recursive so long lists will blow the stack
+      def init[A](l: List[A]): List[A] = l match {
+        case Nil => Nil
+        case Cons(_, Nil) => Nil
+        case Cons(h, t) => Cons(h, init(t))
+        
+      }
     }
     
     import List._
@@ -240,5 +277,25 @@ object ListTest{
     }
     
     println(x)
+    
+    println(tail(List(1, 2, 3, 4)))
+    //println(tail(List()))   <- generates exception as expected
+    
+    println(setHead(1, List(2, 3, 4)))
+    
+    println(drop(List(1, 2, 3), 1))
+    println(drop(List(1, 2, 3), 2))
+    println(drop(List(1, 2, 3), 3))
+    println(drop(List(1, 2, 3), 4))
+    println(drop(List(1, 2, 3), -3)) // <- should we raise an exception here instead of allowing it...
+    
+    println(dropWhile(List(1, 2, 3))(_ < 2))
+    println(dropWhile(List(1, 2, 3))(_ < 4))
+    println(dropWhile(List(1, 2, 3))(_ < 10))
+    
+    println()
+    println("init function on List(1, 2, 3, 4): " + init(List(1, 2, 3, 4)))
+    println("init function on List(1, 2): " + init(List(1, 2)))
+    println("init function on List(1): " + init(List(1)))
   }
 }
