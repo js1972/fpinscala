@@ -34,6 +34,13 @@ object List { // `List` companion object. Contains functions for creating and wo
       case Cons(h,t) => Cons(h, append(t, a2))
     }
 
+  //
+  // Note that when using foldRight you can --NEVER -- early terminate (or short circuit) 
+  // because the arguments to the function must be evaluated first, which in the case of
+  // foldRight means traversing the entire List all the way to the end...
+  // foldRight is NOT stack-safe!
+  //
+  
   def foldRight[A,B](as: List[A], z: B)(f: (A, B) => B): B = // Utility functions
     as match {
       case Nil => z
@@ -45,21 +52,55 @@ object List { // `List` companion object. Contains functions for creating and wo
   
   def product2(ns: List[Double]) = 
     foldRight(ns, 1.0)(_ * _) // `_ * _` is more concise notation for `(x,y) => x * y`; see sidebar
+  
+  def tail[A](l: List[A]): List[A] = l match {
+    case Nil        => sys.error("tail of empty list")
+    case Cons(_, t) => t
+  }
+  
+  def setHead[A](l: List[A], h: A): List[A] = l match {
+    case Nil        => sys.error("set head of empty list")
+    case Cons(_, t) => Cons(h, t)
+  }
 
+  def drop[A](l: List[A], n: Int): List[A] = l match {
+    case Nil        => Nil
+    case Cons(_, t) => if (n <= 0) l else drop(t, n-1) 
+  }
 
-  def tail[A](l: List[A]): List[A] = sys.error("todo")
+  // I'm using a curried function so that scalac can do type inference on the predicate function...
+  def dropWhile[A](l: List[A])(f: A => Boolean): List[A] = l match {
+    case Cons(h, t) if f(h) => dropWhile(t)(f)
+    case _                  => l
+  }
+  
+  // this is not tail recursive so long lists will blow the stack
+  def init[A](l: List[A]): List[A] = l match {
+    case Nil => Nil
+    case Cons(_, Nil) => Nil
+    case Cons(h, t) => Cons(h, init(t))      
+  }
 
-  def setHead[A](l: List[A], h: A): List[A] = sys.error("todo")
+  def length[A](l: List[A]): Int = foldRight(l, 0)((_, acc) => acc + 1)
 
-  def drop[A](l: List[A], n: Int): List[A] = sys.error("todo")
+  // foldLeft is stack-safe!
+  @annotation.tailrec
+  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = l match {
+    case Nil => z
+    case Cons(h, t) => foldLeft(t, f(z, h))(f)
+  }
 
-  def dropWhile[A](l: List[A], f: A => Boolean): List[A] = sys.error("todo")
-
-  def init[A](l: List[A]): List[A] = sys.error("todo")
-
-  def length[A](l: List[A]): Int = sys.error("todo")
-
-  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = sys.error("todo")
-
+  def sum3(ns: List[Int]) = 
+    foldLeft(ns, 0)((x,y) => x + y)
+  
+  def product3(ns: List[Double]) = 
+    foldLeft(ns, 1.0)(_ * _)
+  
+  def length2[A](l: List[A]): Int = foldLeft(l, 0)((acc, _) => acc + 1)
+  
+  def reverse[A](l: List[A]): List[A] = 
+    foldLeft(l, Nil: List[A])((acc, h) => Cons(h, acc))
+  
   def map[A,B](l: List[A])(f: A => B): List[B] = sys.error("todo")
+  
 }
