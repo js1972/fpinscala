@@ -34,6 +34,12 @@ object List { // `List` companion object. Contains functions for creating and wo
       case Cons(h,t) => Cons(h, append(t, a2))
     }
 
+  def appendViaFoldRight[A](a1: List[A], a2: List[A]): List[A] =
+    foldRight(a1, a2)(Cons(_, _))
+    
+  def appendViaFoldLeft[A](a1: List[A], a2: List[A]): List[A] =
+    foldLeft(reverse(a1), a2)((a, b) => Cons(b, a))
+    
   //
   // Note that when using foldRight you can --NEVER -- early terminate (or short circuit) 
   // because the arguments to the function must be evaluated first, which in the case of
@@ -56,6 +62,11 @@ object List { // `List` companion object. Contains functions for creating and wo
   def tail[A](l: List[A]): List[A] = l match {
     case Nil        => sys.error("tail of empty list")
     case Cons(_, t) => t
+  }
+  
+  def head[A](l: List[A]): A = l match {
+    case Nil => sys.error("head of empty list")
+    case Cons(h, _) => h
   }
   
   def setHead[A](l: List[A], h: A): List[A] = l match {
@@ -101,6 +112,31 @@ object List { // `List` companion object. Contains functions for creating and wo
   def reverse[A](l: List[A]): List[A] = 
     foldLeft(l, Nil: List[A])((acc, h) => Cons(h, acc))
   
-  def map[A,B](l: List[A])(f: A => B): List[B] = sys.error("todo")
+  // Lets try and implement foldRight in terms of foldLeft so that its 
+  // tail-recursive..
+  def foldRightViaFoldLeft[A,B](l: List[A], z: B)(f: (A, B) => B): B =
+    foldLeft(reverse(l), z)((b, a) => f(a, b))
+    
+  def concat[A](ll: List[List[A]]): List[A] =
+    foldRight(ll, Nil: List[A])(append)
+    
+  def addOneToListElements(l: List[Int]): List[Int] =
+    foldRight(l, Nil: List[Int])((h, t) => Cons(h + 1, t))
+    
+  def listDoubleToString(l: List[Double]): List[String] =
+    foldRight(l, Nil: List[String])((h, t) => Cons(h.toString, t))
   
+  def map[A,B](l: List[A])(f: A => B): List[B] = 
+    foldRight(l, Nil: List[B])((h, t) => Cons(f(h), t))
+  
+  // Stack-safe version...
+  def map2[A,B](l: List[A])(f: A => B): List[B] = 
+    foldRightViaFoldLeft(l, Nil: List[B])((h, t) => Cons(f(h), t))
+    
+  def filter[A](as: List[A])(f: A => Boolean): List[A] =
+    foldRight(as, Nil: List[A])((h, t) => if (f(h)) Cons(h, t) else t)
+    
+  // Stack-safe version again...
+  def filter2[A](as: List[A])(f: A => Boolean): List[A] =
+    foldRightViaFoldLeft(as, Nil: List[A])((h, t) => if (f(h)) Cons(h, t) else t)
 }
