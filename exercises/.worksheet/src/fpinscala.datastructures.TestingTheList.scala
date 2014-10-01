@@ -23,20 +23,24 @@ object TestingTheList {;import org.scalaide.worksheet.runtime.library.WorksheetS
   product3(List(1, 2, 3, 4));System.out.println("""res5: Double = """ + $show(res$5));$skip(28); val res$6 = 
   length2(List(1, 2, 3, 4));System.out.println("""res6: Int = """ + $show(res$6));$skip(31); val res$7 = 
   
-  reverse(List(1, 2, 3, 4));System.out.println("""res7: fpinscala.datastructures.List[Int] = """ + $show(res$7));$skip(57); val res$8 = 
+  reverse(List(1, 2, 3, 4));System.out.println("""res7: fpinscala.datastructures.List[Int] = """ + $show(res$7));$skip(28); val res$8 = 
   
-  foldRightViaFoldLeft(List(1, 2, 3, 4, 5), 0)(_ + _);System.out.println("""res8: Int = """ + $show(res$8));$skip(53); val res$9 = 
+  init(List(1, 2, 3, 4));System.out.println("""res8: fpinscala.datastructures.List[Int] = """ + $show(res$8));$skip(57); val res$9 = 
   
-  appendViaFoldLeft(List(1, 2, 3), List(4, 5, 6));System.out.println("""res9: fpinscala.datastructures.List[Int] = """ + $show(res$9));$skip(51); val res$10 = 
-  appendViaFoldRight(List(1, 2, 3), List(4, 5, 6));System.out.println("""res10: fpinscala.datastructures.List[Int] = """ + $show(res$10));$skip(54); val res$11 = 
+  foldRightViaFoldLeft(List(1, 2, 3, 4, 5), 0)(_ + _);System.out.println("""res9: Int = """ + $show(res$9));$skip(53); val res$10 = 
   
-  concat(List(List(1, 2), List(3, 4), List(5, 6)));System.out.println("""res11: fpinscala.datastructures.List[Int] = """ + $show(res$11));$skip(40); val res$12 = 
+  appendViaFoldLeft(List(1, 2, 3), List(4, 5, 6));System.out.println("""res10: fpinscala.datastructures.List[Int] = """ + $show(res$10));$skip(51); val res$11 = 
+  appendViaFoldRight(List(1, 2, 3), List(4, 5, 6));System.out.println("""res11: fpinscala.datastructures.List[Int] = """ + $show(res$11));$skip(54); val res$12 = 
+  
+  concat(List(List(1, 2), List(3, 4), List(5, 6)));System.out.println("""res12: fpinscala.datastructures.List[Int] = """ + $show(res$12));$skip(40); val res$13 = 
  
-  addOneToListElements(List(1, 2, 3));System.out.println("""res12: fpinscala.datastructures.List[Int] = """ + $show(res$12));$skip(42); val res$13 = 
-  listDoubleToString(List(1.0, 2.3, 3.0));System.out.println("""res13: fpinscala.datastructures.List[String] = """ + $show(res$13));$skip(28); val res$14 = 
-  map(List(1, 2, 3))(_ + 1);System.out.println("""res14: fpinscala.datastructures.List[Int] = """ + $show(res$14));$skip(29); val res$15 = 
-  map2(List(1, 2, 3))(_ + 1);System.out.println("""res15: fpinscala.datastructures.List[Int] = """ + $show(res$15));$skip(44); val res$16 = 
+  addOneToListElements(List(1, 2, 3));System.out.println("""res13: fpinscala.datastructures.List[Int] = """ + $show(res$13));$skip(42); val res$14 = 
+  listDoubleToString(List(1.0, 2.3, 3.0));System.out.println("""res14: fpinscala.datastructures.List[String] = """ + $show(res$14));$skip(28); val res$15 = 
+  map(List(1, 2, 3))(_ + 1);System.out.println("""res15: fpinscala.datastructures.List[Int] = """ + $show(res$15));$skip(29); val res$16 = 
+  map2(List(1, 2, 3))(_ + 1);System.out.println("""res16: fpinscala.datastructures.List[Int] = """ + $show(res$16));$skip(44); val res$17 = 
   
-  filter(List(1, 2, 3, 4, 5, 6))(_ >= 3);System.out.println("""res16: fpinscala.datastructures.List[Int] = """ + $show(res$16));$skip(42); val res$17 = 
-  filter2(List(1, 2, 3, 4, 5, 6))(_ >= 3);System.out.println("""res17: fpinscala.datastructures.List[Int] = """ + $show(res$17))}
+  filter(List(1, 2, 3, 4, 5, 6))(_ >= 3);System.out.println("""res17: fpinscala.datastructures.List[Int] = """ + $show(res$17));$skip(42); val res$18 = 
+  filter2(List(1, 2, 3, 4, 5, 6))(_ >= 3);System.out.println("""res18: fpinscala.datastructures.List[Int] = """ + $show(res$18));$skip(47); val res$19 = 
+  hasSubsequence(List(1, 2, 3, 4), List(1, 2));System.out.println("""res19: Boolean = """ + $show(res$19));$skip(47); val res$20 = 
+  hasSubsequence(List(1, 2, 3, 4), List(3, 4));System.out.println("""res20: Boolean = """ + $show(res$20))}
 }

@@ -27,25 +27,29 @@ object TestingTheList {
   reverse(List(1, 2, 3, 4))                       //> res7: fpinscala.datastructures.List[Int] = Cons(4,Cons(3,Cons(2,Cons(1,Nil))
                                                   //| ))
   
+  init(List(1, 2, 3, 4))                          //> res8: fpinscala.datastructures.List[Int] = Cons(1,Cons(2,Cons(3,Nil)))
+  
   foldRightViaFoldLeft(List(1, 2, 3, 4, 5), 0)(_ + _)
-                                                  //> res8: Int = 15
+                                                  //> res9: Int = 15
   
-  appendViaFoldLeft(List(1, 2, 3), List(4, 5, 6)) //> res9: fpinscala.datastructures.List[Int] = Cons(1,Cons(2,Cons(3,Cons(4,Cons(
-                                                  //| 5,Cons(6,Nil))))))
-  appendViaFoldRight(List(1, 2, 3), List(4, 5, 6))//> res10: fpinscala.datastructures.List[Int] = Cons(1,Cons(2,Cons(3,Cons(4,Cons
+  appendViaFoldLeft(List(1, 2, 3), List(4, 5, 6)) //> res10: fpinscala.datastructures.List[Int] = Cons(1,Cons(2,Cons(3,Cons(4,Cons
+                                                  //| (5,Cons(6,Nil))))))
+  appendViaFoldRight(List(1, 2, 3), List(4, 5, 6))//> res11: fpinscala.datastructures.List[Int] = Cons(1,Cons(2,Cons(3,Cons(4,Cons
                                                   //| (5,Cons(6,Nil))))))
   
-  concat(List(List(1, 2), List(3, 4), List(5, 6)))//> res11: fpinscala.datastructures.List[Int] = Cons(1,Cons(2,Cons(3,Cons(4,Cons
-                                                  //| (5,Cons(6,Nil))))))
+  concat(List(List(1, 2), List(3, 4), List(5, 6)))//> res12: fpinscala.datastructures.List[Int] = Cons(1,Cons(2,Cons(3,Cons(4,Con
+                                                  //| s(5,Cons(6,Nil))))))
  
-  addOneToListElements(List(1, 2, 3))             //> res12: fpinscala.datastructures.List[Int] = Cons(2,Cons(3,Cons(4,Nil)))
-  listDoubleToString(List(1.0, 2.3, 3.0))         //> res13: fpinscala.datastructures.List[String] = Cons(1.0,Cons(2.3,Cons(3.0,N
+  addOneToListElements(List(1, 2, 3))             //> res13: fpinscala.datastructures.List[Int] = Cons(2,Cons(3,Cons(4,Nil)))
+  listDoubleToString(List(1.0, 2.3, 3.0))         //> res14: fpinscala.datastructures.List[String] = Cons(1.0,Cons(2.3,Cons(3.0,N
                                                   //| il)))
-  map(List(1, 2, 3))(_ + 1)                       //> res14: fpinscala.datastructures.List[Int] = Cons(2,Cons(3,Cons(4,Nil)))
-  map2(List(1, 2, 3))(_ + 1)                      //> res15: fpinscala.datastructures.List[Int] = Cons(2,Cons(3,Cons(4,Nil)))
+  map(List(1, 2, 3))(_ + 1)                       //> res15: fpinscala.datastructures.List[Int] = Cons(2,Cons(3,Cons(4,Nil)))
+  map2(List(1, 2, 3))(_ + 1)                      //> res16: fpinscala.datastructures.List[Int] = Cons(2,Cons(3,Cons(4,Nil)))
   
-  filter(List(1, 2, 3, 4, 5, 6))(_ >= 3)          //> res16: fpinscala.datastructures.List[Int] = Cons(3,Cons(4,Cons(5,Cons(6,Nil
+  filter(List(1, 2, 3, 4, 5, 6))(_ >= 3)          //> res17: fpinscala.datastructures.List[Int] = Cons(3,Cons(4,Cons(5,Cons(6,Nil
                                                   //| ))))
-  filter2(List(1, 2, 3, 4, 5, 6))(_ >= 3)         //> res17: fpinscala.datastructures.List[Int] = Cons(3,Cons(4,Cons(5,Cons(6,Nil
+  filter2(List(1, 2, 3, 4, 5, 6))(_ >= 3)         //> res18: fpinscala.datastructures.List[Int] = Cons(3,Cons(4,Cons(5,Cons(6,Nil
                                                   //| ))))
+  hasSubsequence(List(1, 2, 3, 4), List(1, 2))    //> res19: Boolean = true
+  hasSubsequence(List(1, 2, 3, 4), List(3, 4))    //> res20: Boolean = true
 }
