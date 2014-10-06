@@ -71,9 +71,35 @@ object Option {
   def variance(xs: Seq[Double]): Option[Double] = 
     mean(xs) flatMap (m => mean(xs map (x => math.pow(x - m, 2))))
 
-  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = sys.error("todo")
+  // Can do it with nested pattern matching, but flatMap is more succint... We can of course
+  // use for-comprehension syntax to make it even nicer...
+  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = //a match {
+      //case None => None
+      //case Some(x) => b match {
+      //  case None => None
+      //  case Some(y) => Some(f(x, y))
+      //}
+      
+      a flatMap { x => b map { y => f(x, y) } }
+  //}
+  
+  // much nicer ->
+  //for {
+  //  x <- a
+  //  y <- b
+  //} yield f(x, y)
 
-  def sequence[A](a: List[Option[A]]): Option[List[A]] = sys.error("todo")
+  
+  def sequence[A](a: List[Option[A]]): Option[List[A]] = a match {
+    case Nil => Some(Nil)
+    case h::t => h flatMap (hh => sequence(t) map (hh :: _))
+  }
+  
+  def sequenceViaTraverse[A](a: List[Option[A]]): Option[List[A]] = 
+    traverse(a)(x => x)
 
-  def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = sys.error("todo")
+  def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = a match {
+    case Nil => Some(Nil)
+    case h::t => map2(f(h), traverse(t)(f))(_ :: _)
+  }
 }
