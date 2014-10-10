@@ -26,6 +26,17 @@ object stream_testing {;import org.scalaide.worksheet.runtime.library.WorksheetS
   
   constant(4).take(5).toList;System.out.println("""res13: List[Int] = """ + $show(res$13));$skip(25); val res$14 = 
   from(1).take(5).toList;System.out.println("""res14: List[Int] = """ + $show(res$14));$skip(23); val res$15 = 
-  fibs.take(10).toList;System.out.println("""res15: List[Int] = """ + $show(res$15))}
+  fibs.take(10).toList;System.out.println("""res15: List[Int] = """ + $show(res$15));$skip(36); val res$16 = 
   
+  onesUsingUnfold.take(5).toList;System.out.println("""res16: List[Int] = """ + $show(res$16));$skip(40); val res$17 = 
+  constantUsingUnfold(4).take(5).toList;System.out.println("""res17: List[Int] = """ + $show(res$17));$skip(37); val res$18 = 
+  fromUsingUnfold(12).take(5).toList;System.out.println("""res18: List[Int] = """ + $show(res$18));$skip(51); val res$19 = 
+  
+  Stream(1, 2, 3, 4, 5).takeViaUnfold(3).toList;System.out.println("""res19: List[Int] = """ + $show(res$19));$skip(55); val res$20 = 
+  
+  Stream(1, 2, 3, 4, 5).startsWith(Stream(1, 2, 3));System.out.println("""res20: Boolean = """ + $show(res$20));$skip(45); val res$21 = 
+  Stream(1, 2, 3, 4, 5).tails.take(5).toList;System.out.println("""res21: List[fpinscala.laziness.Stream[Int]] = """ + $show(res$21));$skip(56); val res$22 = 
+  Stream(1, 2, 3, 4, 5) hasSubsequence(Stream(1, 2, 3));System.out.println("""res22: Boolean = """ + $show(res$22));$skip(56); val res$23 = 
+  
+  (Stream(1, 2, 3, 4, 5).scanRight(0){_ + _}).toList;System.out.println("""res23: List[Int] = """ + $show(res$23))}
 }

@@ -29,4 +29,20 @@ object stream_testing {
   from(1).take(5).toList                          //> res14: List[Int] = List(1, 2, 3, 4, 5)
   fibs.take(10).toList                            //> res15: List[Int] = List(0, 1, 1, 2, 3, 5, 8, 13, 21, 34)
   
+  onesUsingUnfold.take(5).toList                  //> res16: List[Int] = List(1, 1, 1, 1, 1)
+  constantUsingUnfold(4).take(5).toList           //> res17: List[Int] = List(4, 4, 4, 4, 4)
+  fromUsingUnfold(12).take(5).toList              //> res18: List[Int] = List(12, 13, 14, 15, 16)
+  
+  Stream(1, 2, 3, 4, 5).takeViaUnfold(3).toList   //> res19: List[Int] = List(1, 2, 3)
+  
+  Stream(1, 2, 3, 4, 5).startsWith(Stream(1, 2, 3))
+                                                  //> res20: Boolean = true
+  Stream(1, 2, 3, 4, 5).tails.take(5).toList      //> res21: List[fpinscala.laziness.Stream[Int]] = List(Cons(<function0>,<functio
+                                                  //| n0>), Cons(<function0>,<function0>), Cons(<function0>,<function0>), Cons(<fu
+                                                  //| nction0>,<function0>), Cons(<function0>,<function0>))
+  Stream(1, 2, 3, 4, 5) hasSubsequence(Stream(1, 2, 3))
+                                                  //> res22: Boolean = true
+  
+  (Stream(1, 2, 3, 4, 5).scanRight(0){_ + _}).toList
+                                                  //> res23: List[Int] = List(15, 14, 12, 9, 5, 0)
 }
