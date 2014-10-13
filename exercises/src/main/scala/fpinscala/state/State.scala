@@ -30,17 +30,61 @@ object RNG {
       (f(a), rng2)
     }
 
-  def nonNegativeInt(rng: RNG): (Int, RNG) = ???
+  // We need to be quite careful not to skew the generator.
+  // Since `Int.Minvalue` is 1 smaller than `-(Int.MaxValue)`,
+  // it suffices to increment the negative numbers by 1 and make them positive.
+  // This maps Int.MinValue to Int.MaxValue and -1 to 0.
+  def nonNegativeInt(rng: RNG): (Int, RNG) = {
+    val (i, r) = rng.nextInt
+    (if (i < 0) -(i + 1) else i, r)
+  }
 
-  def double(rng: RNG): (Double, RNG) = ???
+  // We generate an integer >= 0 and divide it by one higher than the
+  // maximum. This is just one possible solution.
+  def double(rng: RNG): (Double, RNG) = {
+    val (i, r) = nonNegativeInt(rng)
+    (i / (Int.MaxValue.toDouble + 1), r)
+  }
 
-  def intDouble(rng: RNG): ((Int,Double), RNG) = ???
+  def intDouble(rng: RNG): ((Int,Double), RNG) = {
+    val (i, r1) = rng.nextInt
+    val (d, r2) = double(r1)
+    ((i, d), r2)
+  }
 
-  def doubleInt(rng: RNG): ((Double,Int), RNG) = ???
+  def doubleInt(rng: RNG): ((Double,Int), RNG) = {
+    val ((i, d), r) = intDouble(rng)
+    ((d, i), r)
+  }
 
-  def double3(rng: RNG): ((Double,Double,Double), RNG) = ???
+  def double3(rng: RNG): ((Double,Double,Double), RNG) = {
+    val (d1, r1) = double(rng)
+    val (d2, r2) = double(r1)
+    val (d3, r3) = double(r2)
+    ((d1, d2, d3), r3)
+  }
 
-  def ints(count: Int)(rng: RNG): (List[Int], RNG) = ???
+  def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
+    if (count == 0)
+      (List(), rng)
+    else {
+      val (x, r1) = rng.nextInt
+      val (xs, r2) = ints(count - 1)(r1)
+      (x :: xs, r2)
+    }
+  }
+
+  // A tail-recursive solution
+  def ints2(count: Int)(rng: RNG): (List[Int], RNG) = {
+    def go(count: Int, r: RNG, xs: List[Int]): (List[Int], RNG) =
+      if (count == 0)
+        (xs, r)
+      else {
+        val (x, r2) = r.nextInt
+        go(count - 1, r2, x :: xs)
+      }
+    go(count, rng, List())
+  }
 
   def map2[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = ???
 
