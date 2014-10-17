@@ -2,6 +2,10 @@ package fpinscala.parallelism
 
 import java.util.concurrent._
 
+/* 
+This implementation is not safe for execution on bounded thread pools, and it also does not preserve timeouts. Can you see why? You may wish to try implementing a nonblocking version like was done for `fork`.  
+*/
+
 object Par {
   type Par[A] = ExecutorService => Future[A]
   
