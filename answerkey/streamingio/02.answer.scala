@@ -8,6 +8,14 @@
  * then added to the running total, and then this running total
  * will be converted back to `Int`, then the `Process` will examine
  * the next element, and so on.
+ *
+ * JS Comments:
+ * The |> operator is an alias for pipe() which feeds the output
+ * of one `Process` to the input of the next. The two `Process`es
+ * are fused such that this `Process` will only generate values as
+ * demanded by the next.
+ 
+ * See: https://github.com/scalaz/scalaz-stream/blob/master/src/main/scala/scalaz/stream/Process.scala
  */
 def count[I]: Process[I,Int] =
   lift((i: I) => 1.0) |> sum |> lift(_.toInt)
